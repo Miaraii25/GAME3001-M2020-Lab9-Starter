@@ -2,6 +2,7 @@
 #include "Game.h"
 #include "EventManager.h"
 #include "Util.h"
+#include "DebugKey.h"
 
 PlayScene::PlayScene()
 {
@@ -20,13 +21,13 @@ void PlayScene::draw()
 		Util::DrawLine(m_pPlayer->getTransform()->position, m_pPlaneSprite->getTransform()->position);
 		
 		// collision boundaries
-		Util::DrawRect(m_pPlaneSprite->getTransform()->position - glm::vec2(m_pPlaneSprite->getWidth(),
-			m_pPlaneSprite->getHeight()*0.5f),m_pPlayer->getWidth(), m_pPlaneSprite->getHeight());
+		Util::DrawRect(m_pPlaneSprite->getTransform()->position - glm::vec2(m_pPlaneSprite->getWidth()*0.5f,
+			m_pPlaneSprite->getHeight()* 0.5f),m_pPlayer->getWidth(), m_pPlaneSprite->getHeight());
 		
-		Util::DrawRect(m_pPlayer->getTransform()->position - glm::vec2(m_pPlayer->getWidth(),
+		Util::DrawRect(m_pPlayer->getTransform()->position - glm::vec2(m_pPlayer->getWidth()*0.5f,
 			m_pPlayer->getHeight() * 0.5f), m_pPlayer->getWidth(), m_pPlayer->getHeight());
 		
-		Util::DrawRect(m_pObstacle->getTransform()->position - glm::vec2(m_pObstacle->getWidth(),
+		Util::DrawRect(m_pObstacle->getTransform()->position - glm::vec2(m_pObstacle->getWidth()*0.5f,
 			m_pObstacle->getHeight() * 0.5f), m_pObstacle ->getWidth(), m_pObstacle->getHeight());
 	}
 }
@@ -129,21 +130,74 @@ void PlayScene::handleEvents()
 		TheGame::Instance()->quit();
 	}
 
-
-	
-	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_H))
+	//H key
+	if (!m_bDebugKeys[H_KEY])
 	{
-		m_bdebugmode = !m_bdebugmode;
-		if (m_bdebugmode)
+		if (EventManager::Instance().isKeyDown(SDL_SCANCODE_H))
 		{
-			std::cout << "Debug mode on" << std::endl;
-		}
-		else if (!m_bdebugmode)
-		{
-			std::cout << "Debug mode off" << std::endl;
+			m_bdebugmode = !m_bdebugmode;
+			m_bDebugKeys[H_KEY] = true;
+			if (m_bdebugmode)
+			{
+				std::cout << "Debug mode on" << std::endl;
+			}
+			else if (!m_bdebugmode)
+			{
+				std::cout << "Debug mode off" << std::endl;
 
+			}
 		}
 	}
+
+	if (EventManager::Instance().isKeyUp(SDL_SCANCODE_H))
+	{
+		m_bDebugKeys[H_KEY]= false;
+	}
+	
+	// K Key
+	if (!m_bDebugKeys[K_KEY])
+	{
+		if (EventManager::Instance().isKeyDown(SDL_SCANCODE_K))
+		{
+			
+			
+				std::cout << "Debug: Enemy Takes Damage" << std::endl;
+				m_bDebugKeys[K_KEY] = true;
+
+			
+			
+		}
+	}
+
+	if (EventManager::Instance().isKeyUp(SDL_SCANCODE_K))
+	{
+		m_bDebugKeys[K_KEY] = false;
+	}
+
+	// P Key
+	if (!m_bDebugKeys[P_KEY])
+	{
+		if (EventManager::Instance().isKeyDown(SDL_SCANCODE_P))
+		{
+			m_bPartolMode = !m_bPartolMode;
+			m_bDebugKeys[P_KEY] = true;
+			if (m_bPartolMode)
+			{
+				std::cout << "Debug: Patrol mode on" << std::endl;
+			}
+			else if (!m_bPartolMode)
+			{
+				std::cout << "Debug: Patrol mode off" << std::endl;
+
+			}
+		}
+	}
+
+	if (EventManager::Instance().isKeyUp(SDL_SCANCODE_P))
+	{
+		m_bDebugKeys[P_KEY] = false;
+	}
+
 	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_1))
 	{
 		TheGame::Instance()->changeSceneState(START_SCENE);

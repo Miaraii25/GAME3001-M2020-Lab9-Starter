@@ -2,6 +2,12 @@
 #ifndef _DEBUG_KEYS_
 #define _DEBUG_KEYS_
 
-enum
+enum DebugKeys
+{
+	H_KEY,
+    K_KEY,
+    P_KEY,
+    NUM_OF_DEBUG_KEYS
+};
 
-endif/*defined(_DEBUG_KEYS_*/
+#endif /*defined(_DEBUG_KEYS_)*/
